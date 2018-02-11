@@ -4,8 +4,8 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#ifndef ffm-service_TYPES_H
-#define ffm-service_TYPES_H
+#ifndef ffm_service_TYPES_H
+#define ffm_service_TYPES_H
 
 #include <iosfwd>
 

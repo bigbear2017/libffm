@@ -4,13 +4,13 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#include "ffm-service_constants.h"
+#include "ffm_service_constants.h"
 
 
 
-const ffm-serviceConstants g_ffm-service_constants;
+const ffm_serviceConstants g_ffm_service_constants;
 
-ffm-serviceConstants::ffm-serviceConstants() {
+ffm_serviceConstants::ffm_serviceConstants() {
 }
 
 

@@ -5,6 +5,7 @@
 #include <thrift/transport/TBufferTransports.h>
 
 #include "ffm.h"
+#include <iostream>
 
 using namespace ::apache::thrift;
 using namespace ::apache::thrift::protocol;
@@ -50,14 +51,14 @@ class FFMPredictorHandler : virtual public FFMPredictorIf {
 int main(int argc, char **argv) {
   int port = 9090;
   std::string model_path = "/Users/caonannan/programs/github/libffm/model";
-  shared_ptr<FFMPredictorHandler> handler(new FFMPredictorHandler(model_path));
-  shared_ptr<TProcessor> processor(new FFMPredictorProcessor(handler));
-  shared_ptr<TServerTransport> serverTransport(new TServerSocket(port));
-  shared_ptr<TTransportFactory> transportFactory(new TBufferedTransportFactory());
-  shared_ptr<TProtocolFactory> protocolFactory(new TBinaryProtocolFactory());
+  boost::shared_ptr<FFMPredictorHandler> handler(new FFMPredictorHandler(model_path));
+  boost::shared_ptr<TProcessor> processor(new FFMPredictorProcessor(handler));
+  boost::shared_ptr<TServerTransport> serverTransport(new TServerSocket(port));
+  boost::shared_ptr<TTransportFactory> transportFactory(new TBufferedTransportFactory());
+  boost::shared_ptr<TProtocolFactory> protocolFactory(new TBinaryProtocolFactory());
 
   TSimpleServer server(processor, serverTransport, transportFactory, protocolFactory);
   server.serve();
-  cout << "server starting ..." << endl;
+  cout << "server starting ..." << std::endl;
   return 0;
 }

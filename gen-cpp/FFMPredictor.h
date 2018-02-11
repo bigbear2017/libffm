@@ -9,7 +9,7 @@
 
 #include <thrift/TDispatchProcessor.h>
 #include <thrift/async/TConcurrentClientSyncInfo.h>
-#include "ffm-service_types.h"
+#include "ffm_service_types.h"
 
 
 
