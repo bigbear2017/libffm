@@ -12,8 +12,6 @@ using namespace ::apache::thrift::protocol;
 using namespace ::apache::thrift::transport;
 using namespace ::apache::thrift::server;
 
-using boost::shared_ptr;
-
 class FFMPredictorHandler : virtual public FFMPredictorIf {
  public:
   FFMPredictorHandler() {
@@ -34,11 +32,11 @@ class FFMPredictorHandler : virtual public FFMPredictorIf {
 
 int main(int argc, char **argv) {
   int port = 9090;
-  shared_ptr<FFMPredictorHandler> handler(new FFMPredictorHandler());
-  shared_ptr<TProcessor> processor(new FFMPredictorProcessor(handler));
-  shared_ptr<TServerTransport> serverTransport(new TServerSocket(port));
-  shared_ptr<TTransportFactory> transportFactory(new TBufferedTransportFactory());
-  shared_ptr<TProtocolFactory> protocolFactory(new TBinaryProtocolFactory());
+  ::apache::thrift::stdcxx::shared_ptr<FFMPredictorHandler> handler(new FFMPredictorHandler());
+  ::apache::thrift::stdcxx::shared_ptr<TProcessor> processor(new FFMPredictorProcessor(handler));
+  ::apache::thrift::stdcxx::shared_ptr<TServerTransport> serverTransport(new TServerSocket(port));
+  ::apache::thrift::stdcxx::shared_ptr<TTransportFactory> transportFactory(new TBufferedTransportFactory());
+  ::apache::thrift::stdcxx::shared_ptr<TProtocolFactory> protocolFactory(new TBinaryProtocolFactory());
 
   TSimpleServer server(processor, serverTransport, transportFactory, protocolFactory);
   server.serve();
