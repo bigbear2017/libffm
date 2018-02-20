@@ -8,26 +8,28 @@
 #include <thrift/transport/TSocket.h>
 #include <thrift/transport/TTransportUtils.h>
 #include <thrift/TToString.h>
-#include <thrift/stdcxx.h>
+
+#include <boost/make_shared.hpp>
+
+#include <iostream>
+#include <stdexcept>
+#include <sstream>
 
 #include "ffm.h"
 #include "gen-cpp/ffm_service_types.h"
 #include "gen-cpp/FFMPredictor.h"
 #include <vector>
 #include <iostream>
+using boost::shared_ptr;
 
+using namespace std;
+using namespace ffm;
 
 using namespace apache::thrift;
 using namespace apache::thrift::concurrency;
 using namespace apache::thrift::protocol;
 using namespace apache::thrift::transport;
 using namespace apache::thrift::server;
-
-
-using boost::shared_ptr;
-
-using namespace std;
-using namespace ffm;
 
 class FFMPredictorHandler : virtual public FFMPredictorIf {
   private:
@@ -62,47 +64,44 @@ class FFMPredictorHandler : virtual public FFMPredictorIf {
 };
 
 int main(int argc, char **argv) {
-  /*
-  std::string model_path = "/Users/caonannan/programs/github/libffm/model";
+	/*
   TThreadedServer server(
-    stdcxx::make_shared<FFMPredictorProcessor>(stdcxx::make_shared<FFMPredictorHandler>()),
-    stdcxx::make_shared<TServerSocket>(9090), //port
-    stdcxx::make_shared<TBufferedTransportFactory>(),
-    stdcxx::make_shared<TBinaryProtocolFactory>()); */
+    boost::make_shared<FFMPredictorProcessorFactory>(boost::make_shared<FFMPredictorCloneFactory>()),
+    boost::make_shared<TServerSocket>(9090), //port
+    boost::make_shared<TBufferedTransportFactory>(),
+    boost::make_shared<TBinaryProtocolFactory>()); */
 
-  
   // if you don't need per-connection state, do the following instead
   TThreadedServer server(
-    stdcxx::make_shared<FFMPredictorProcessor>(stdcxx::make_shared<FFMPredictorHandler>()),
-    stdcxx::make_shared<TServerSocket>(9090), //port
-    stdcxx::make_shared<TBufferedTransportFactory>(),
-    stdcxx::make_shared<TBinaryProtocolFactory>());
-
+    boost::make_shared<FFMPredictorProcessor>(boost::make_shared<FFMPredictorHandler>()),
+    boost::make_shared<TServerSocket>(9090), //port
+    boost::make_shared<TBufferedTransportFactory>(),
+    boost::make_shared<TBinaryProtocolFactory>());
 
   /**
    * Here are some alternate server types...
 
   // This server only allows one connection at a time, but spawns no threads
   TSimpleServer server(
-    stdcxx::make_shared<CalculatorProcessor>(stdcxx::make_shared<CalculatorHandler>()),
-    stdcxx::make_shared<TServerSocket>(9090),
-    stdcxx::make_shared<TBufferedTransportFactory>(),
-    stdcxx::make_shared<TBinaryProtocolFactory>());
+    boost::make_shared<FFMPredictorProcessor>(boost::make_shared<FFMPredictorHandler>()),
+    boost::make_shared<TServerSocket>(9090),
+    boost::make_shared<TBufferedTransportFactory>(),
+    boost::make_shared<TBinaryProtocolFactory>());
 
   const int workerCount = 4;
 
-  stdcxx::shared_ptr<ThreadManager> threadManager =
+  boost::shared_ptr<ThreadManager> threadManager =
     ThreadManager::newSimpleThreadManager(workerCount);
   threadManager->threadFactory(
-    stdcxx::make_shared<PlatformThreadFactory>());
+    boost::make_shared<PlatformThreadFactory>());
   threadManager->start();
 
   // This server allows "workerCount" connection at a time, and reuses threads
   TThreadPoolServer server(
-    stdcxx::make_shared<CalculatorProcessorFactory>(stdcxx::make_shared<CalculatorCloneFactory>()),
-    stdcxx::make_shared<TServerSocket>(9090),
-    stdcxx::make_shared<TBufferedTransportFactory>(),
-    stdcxx::make_shared<TBinaryProtocolFactory>(),
+    boost::make_shared<FFMPredictorProcessorFactory>(boost::make_shared<FFMPredictorCloneFactory>()),
+    boost::make_shared<TServerSocket>(9090),
+    boost::make_shared<TBufferedTransportFactory>(),
+    boost::make_shared<TBinaryProtocolFactory>(),
     threadManager);
   */
 

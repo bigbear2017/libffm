@@ -3,11 +3,11 @@ CXXFLAGS = -Wall -O3 -std=c++0x -march=native
 
 # comment the following flags if you do not want to SSE instructions
 DFLAG += -DUSESSE
-LIBS = -L/usr/local/Cellar/thrift/0.11.0/lib
+LIBS = -L/usr/local/Cellar/thrift/0.9.3/lib
 
 # comment the following flags if you do not want to use OpenMP
 GEN_CPP = gen-cpp
-THRIFT_DIR = /usr/local/Cellar/thrift/0.11.0/
+THRIFT_DIR = /usr/local/Cellar/thrift/0.9.3/
 DFLAG += -DUSEOMP
 CXXFLAGS += -fopenmp
 CXXFLAGS += -I${GEN_CPP} -I${THRIFT_DIR}/include
