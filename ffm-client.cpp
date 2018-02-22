@@ -41,7 +41,6 @@ int main()
             char *y_char = strtok(line, " \t");
             ffm_float y = (atoi(y_char) > 0) ? 1.0f : -1.0f;
 
-            cout << "here1" << endl;
             while (true)
             {
                 char *field_char = strtok(nullptr, ":");
@@ -54,12 +53,10 @@ int main()
                 N.field = atoi(field_char);
                 N.feature = atoi(idx_char);
                 N.value = atof(value_char);
-                cout << N.field << "\t" << N.feature << "\t" << N.value << endl;
 
                 x.push_back(N);
             }
 
-            cout << "here2" << endl;
             double res = client.predict(x);
             cout << "predict value is : " << res << "true value is :" << y << endl;
         }

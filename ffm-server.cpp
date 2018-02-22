@@ -56,14 +56,10 @@ class FFMPredictorHandler : virtual public FFMPredictorIf {
         N.f = features[i].field;
         N.j = features[i].feature;
         N.v = features[i].value;
-        cout << N.f << "\t" << N.j << "\t" << N.v << endl;
 
         x.push_back(N);
       }
-      cout << x.size() << "\t" << features.size() << endl;
-      printf("predict started\n");
       ffm_float y_bar = ffm_predict(x.data(), x.data()+x.size(), *model);
-      printf("predict finished\n");
       return y_bar;
     }
     ~FFMPredictorHandler() {
