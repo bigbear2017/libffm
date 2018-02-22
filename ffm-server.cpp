@@ -33,15 +33,14 @@ using namespace apache::thrift::server;
 
 class FFMPredictorHandler : virtual public FFMPredictorIf {
   private:
-  ffm_model model;
   vector<ffm_node> x;
+  ffm_model *  model;
   
   public:
     FFMPredictorHandler() {
       //load the ffm model
-      string model_path ="/Users/caonannan/programs/github/libffm/model";
-      model = ffm_load_model(model_path);
-      cout << "Model loaded !" << endl;
+      string model_path ="/Users/caonannan/programs/github/libffm/model";      
+      model = ffm_create_and_load_model(model_path);
     }
 
     void ping() {
@@ -49,6 +48,7 @@ class FFMPredictorHandler : virtual public FFMPredictorIf {
     }
 
     double predict(const std::vector<Node> & features) {
+
       x.clear();
       int size = features.size();
       for( int i = 0; i < size; i ++ ) {
@@ -60,10 +60,14 @@ class FFMPredictorHandler : virtual public FFMPredictorIf {
 
         x.push_back(N);
       }
+      cout << x.size() << "\t" << features.size() << endl;
       printf("predict started\n");
-      ffm_float y_bar = ffm_predict(x.data(), x.data()+x.size(), model);
+      ffm_float y_bar = ffm_predict(x.data(), x.data()+x.size(), *model);
       printf("predict finished\n");
       return y_bar;
+    }
+    ~FFMPredictorHandler() {
+      delete model;
     }
 };
 

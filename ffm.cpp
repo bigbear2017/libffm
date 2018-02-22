@@ -682,6 +682,30 @@ ffm_model ffm_load_model(string path) {
     return model;
 }
 
+ffm_model* ffm_create_and_load_model(string path) {
+    ifstream f_in(path, ios::in | ios::binary);
+
+    ffm_model* model = new ffm_model();
+    f_in.read(reinterpret_cast<char*>(&(model->n)), sizeof(ffm_int));
+    f_in.read(reinterpret_cast<char*>(&(model->m)), sizeof(ffm_int));
+    f_in.read(reinterpret_cast<char*>(&(model->k)), sizeof(ffm_int));
+    f_in.read(reinterpret_cast<char*>(&(model->normalization)), sizeof(bool));
+
+    ffm_long w_size = get_w_size(*model);
+    model->W = malloc_aligned_float(w_size);
+    // f_in.read(reinterpret_cast<char*>(model.W), sizeof(ffm_float) * w_size);
+    // Need to write chunk by chunk because some compiler use int32 and will overflow when w_size * 4 > MAX_INT
+
+    for(ffm_long offset = 0; offset < w_size; ) {
+        ffm_long next_offset = min(w_size, offset + (ffm_long) sizeof(ffm_float) * kCHUNK_SIZE);
+        ffm_long size = next_offset - offset;
+        f_in.read(reinterpret_cast<char*>(model->W+offset), sizeof(ffm_float) * size);
+        offset = next_offset;
+    }
+
+    return model;
+}
+
 ffm_float ffm_predict(ffm_node *begin, ffm_node *end, ffm_model &model) {
     ffm_float r = 1;
     if(model.normalization) {

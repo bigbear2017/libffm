@@ -43,4 +43,4 @@ ffm_service_types.o: ${GEN_CPP}/ffm_service_types.cpp ${GEN_CPP}/ffm_service_typ
 	$(CXX) $(CXXFLAGS) $(DFLAG) -c -o $@ $<
 
 clean:
-	rm -f ffm-train ffm-predict ffm-server *.o
+	rm -f ffm-train ffm-predict ffm-server ffm-client *.o

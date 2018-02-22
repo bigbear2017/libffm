@@ -42,6 +42,8 @@ void ffm_save_model(ffm_model &model, string path);
 
 ffm_model ffm_load_model(string path);
 
+ffm_model* ffm_create_and_load_model(string path);
+
 ffm_model ffm_train_on_disk(string Tr_path, string Va_path, ffm_parameter param);
 
 ffm_float ffm_predict(ffm_node *begin, ffm_node *end, ffm_model &model);
