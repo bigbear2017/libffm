@@ -4,7 +4,7 @@ CXXFLAGS = -Wall -O3 -std=c++0x -march=native
 # comment the following flags if you do not want to SSE instructions
 #DFLAG += -DUSESSE
 #THRIFT_DIR = /usr/local/Cellar/thrift/0.9.3/
-THRIFT_DIR = /usr/local/Cellar/thrift\@0.9/0.9.3/
+THRIFT_DIR = /usr/local/Cellar/thrift\@0.9/0.9.3
 LIBS = -L${THRIFT_DIR}/lib
 
 # comment the following flags if you do not want to use OpenMP
@@ -13,7 +13,7 @@ GEN_CPP = gen-cpp
 #CXXFLAGS += -fopenmp
 CXXFLAGS += -I${GEN_CPP} -I${THRIFT_DIR}/include
 
-all: ffm-train ffm-predict ffm-server
+all: ffm-train ffm-predict ffm-server ffm-client
 
 ffm-train: ffm-train.cpp ffm.o timer.o
 	$(CXX) $(CXXFLAGS) $(DFLAG) -o $@ $^
@@ -22,6 +22,9 @@ ffm-predict: ffm-predict.cpp ffm.o timer.o
 	$(CXX) $(CXXFLAGS) $(DFLAG)  -o $@ $^
 
 ffm-server: ffm-server.cpp ffm.o timer.o FFMPredictor.o  ffm_service_constants.o ffm_service_types.o
+	$(CXX) $(CXXFLAGS) $(DFLAG) ${LIBS} -o $@ $^ -lthrift
+
+ffm-client: ffm-client.cpp ffm.o timer.o FFMPredictor.o  ffm_service_constants.o ffm_service_types.o
 	$(CXX) $(CXXFLAGS) $(DFLAG) ${LIBS} -o $@ $^ -lthrift
 
 ffm.o: ffm.cpp ffm.h timer.o
@@ -40,4 +43,4 @@ ffm_service_types.o: ${GEN_CPP}/ffm_service_types.cpp ${GEN_CPP}/ffm_service_typ
 	$(CXX) $(CXXFLAGS) $(DFLAG) -c -o $@ $<
 
 clean:
-	rm -f ffm-train ffm-predict ffm.o timer.o *.o
+	rm -f ffm-train ffm-predict ffm-server *.o
